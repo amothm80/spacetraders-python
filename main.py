@@ -1,23 +1,4 @@
-
-import io
-import sys
-import os
-
-
-sys.path.insert(0, os.path.abspath('packages/spacetraders-sdk/openapi_client'))
-sys.path.insert(0, os.path.abspath('packages/spacetraders-sdk'))
-import openapi_client.api
-import openapi_client.api.contracts_api
-import openapi_client.api.fleet_api
-import openapi_client
-from openapi_client import ApiClient
-from openapi_client import api
-from openapi_client.rest import ApiException
-from pprint import pprint
-import requests
-from requests.exceptions import HTTPError
-import json
-
+from imports import *
 
 token = ''
 api_url = 'https://api.spacetraders.io/v2/'
@@ -28,48 +9,7 @@ def get_token():
     tokenfile = open('spacetradertoken.txt','r')
     token = tokenfile.readline()
 
-def print_response(responsedata):
-    print('\n')
-    for k,v in responsedata.items():
-        print(f'{str(k).replace("_"," ").title()}: {v}')
-    input("press any key to continue...")
-    #print('\n')
-
-def print_response_list(responsedata):
-    for datum in responsedata:
-        print_response(datum)
-
-def determine_pagination(responsemeta, page, limit):
-    if limit * page > responsemeta['total']:
-        uinp = 'b'
-    else:
-        uinp = input("press enter for next page, or b to exit...")
-    page += 1
-    return (uinp,page)
-
-def display_agent(agent_instance: openapi_client.AgentsApi):
-    agent_name = input('please input an agent name: ')
-    #try:
-    agent_info = agent_instance.get_agent_with_http_info(agent_name)
-    #pprint(agent_info.model_dump()['data']['data'])
-    print_response(agent_info.model_dump()['data']['data'])
-
-def display_agents(agent_instance: openapi_client.AgentsApi,page,limit):
-    uinp = ''
-    while uinp != 'b':
-        agents_info = agent_instance.get_agents_with_http_info(limit=limit,page=page)
-        agents_data = agents_info.model_dump()['data']['data']
-        agents_meta = agents_info.model_dump()['data']['meta']
-        print_response_list(agents_data)
-        uinp,page = determine_pagination(agents_meta,page,limit)
-
-
-    # agent_instance.get_my_agent_with_http_info()
     
-
-    
-
-
 if __name__ == '__main__':
     get_token()
 
