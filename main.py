@@ -9,6 +9,147 @@ def get_token():
     tokenfile = open('spacetradertoken.txt','r')
     token = tokenfile.readline()
 
+
+"""display"""
+def print_response(responsedata,waitinput):
+    print('\n')
+    for k,v in responsedata.items():
+        print(f'{str(k).replace("_"," ").title()}: {v}')
+    if waitinput == True:
+        input("press any key to continue...")
+    #print('\n')
+
+def print_response_list(responsedata):
+    for datum in responsedata:
+        print_response(datum,False)
+
+def determine_pagination(responsemeta, page, limit):
+    if limit * page > responsemeta['total']:
+        uinp = 'b'
+    else:
+        uinp = input("press enter for next page, or b to exit...")
+    page += 1
+    return (uinp,page)
+
+
+"""agent information"""
+def display_agent(agent_instance: openapi_client.AgentsApi):
+    agent_name = input('please input an agent name: ')
+    #try:
+    agent_info = agent_instance.get_agent_with_http_info(agent_name)
+    #pprint(agent_info.model_dump()['data']['data'])
+    print_response(agent_info.model_dump()['data']['data'],True)
+
+def display_agents(agent_instance: openapi_client.AgentsApi,page,limit):
+    uinp = ''
+    while uinp != 'b':
+        agents_info = agent_instance.get_agents_with_http_info(limit=limit,page=page)
+        agents_data = agents_info.model_dump()['data']['data']
+        agents_meta = agents_info.model_dump()['data']['meta']
+        print_response_list(agents_data)
+        uinp,page = determine_pagination(agents_meta,page,limit)
+
+def display_my_agent(agent_instance: openapi_client.AgentsApi):
+    agent_info = agent_instance.get_my_agent_with_http_info()
+    print_response(agent_info.model_dump()['data']['data'],True)
+
+"""systems and waypoints"""
+def get_construction(systems_instance: openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input waypoint symbol: ')
+    system_info = systems_instance.get_construction_with_http_info(system_symbol,waypoint_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_jump_gate(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input waypoint symbol: ')
+    system_info = systems_instance.get_jump_gate_with_http_info(system_symbol,waypoint_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_market(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input waypoint symbol: ')
+    system_info = systems_instance.get_market_with_http_info(system_symbol,waypoint_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_shipyard(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input waypoint symbol: ')
+    system_info = systems_instance.get_shipyard_with_http_info(system_symbol,waypoint_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_system(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input waypoint symbol: ')
+    system_info = systems_instance.get_system_with_http_info(system_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_systems(systems_instance:openapi_client.SystemsApi,page,limit):
+    uinp = ''
+    while uinp != 'b':
+        system_info = systems_instance.get_systems_with_http_info(page=page,limit=limit)
+        system_data = system_info.model_dump()['data']['data']
+        system_meta = system_info.model_dump()['data']['meta']
+        print_response_list(system_data)
+        uinp,page = determine_pagination(system_meta,page,limit)
+
+
+def get_system_waypoints(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    system_info = systems_instance.get_system_waypoints_with_http_info(system_symbol=system_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def get_waypoint(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbo: ')
+    waypoint_symbol = input('please input the system waypoint: ')
+    system_info = systems_instance.get_waypoint_with_http_info(system_symbol=system_symbol,waypoint_symbol=waypoint_symbol)
+    print_response(system_info.model_dump()['data']['data'])
+
+def supply_construction(systems_instance:openapi_client.SystemsApi):
+    system_symbol = input('please input the system symbol: ')
+    waypoint_symbol = input('please input the waypoint symbol: ')
+    supply_const_request = ''
+    systems_instance.supply_construction_with_http_info(system_symbol=system_symbol,waypoint_symbol=waypoint_symbol,supply_construction_request=supply_const_request)
+    print_response(system_info.model_dump()['data']['data'])
+
+
+
+"""contracts"""
+
+def accept_contract(contracts_instance:openapi_client.ContractsApi):
+    contract_id = input('please input a contract id: ')
+    contract_info = contracts_instance.accept_contract_with_http_info(contract_id=contract_id)
+    print_response(contract_info.model_dump()['data']['data'])
+
+def deliver_contract(contracts_instance:openapi_client.ContractsApi):
+    contract_id = input('please input a contract id: ')
+    deliver_contract_request = ''
+    contract_info = contracts_instance.deliver_contract_with_http_info(contract_id=contract_id, deliver_contract_request=deliver_contract_request)
+    print_response(contract_info.model_dump()['data']['data'])
+
+def fulfill_contract(contracts_instance:openapi_client.ContractsApi):
+    contract_id = input('please input a contract id: ')
+    contract_info = contracts_instance.fulfill_contract_with_http_info(contract_id=contract_id)
+    print_response(contract_info.model_dump()['data']['data'])
+
+def get_contract(contracts_instance:openapi_client.ContractsApi):
+    contract_id = input('please input a contract id: ')
+    contract_info = contracts_instance.get_contract_with_http_info(contract_id=contract_id)
+    print_response(contract_info.model_dump()['data']['data'])
+
+def get_contracts(contracts_instance:openapi_client.ContractsApi,page,limit):
+    uinp = ''
+    while uinp != 'b':
+        contract_info = contracts_instance.get_contracts_with_http_info(page=page,limit=limit)
+        contract_data = contract_info.model_dump()['data']['data']
+        contract_meta = contract_info.model_dump()['data']['meta']
+        print_response_list(contract_data)
+        uinp,page = determine_pagination(contract_meta,page,limit)
+
+"""factions"""
+
+
+"""fleet"""
     
 if __name__ == '__main__':
     get_token()
@@ -45,21 +186,9 @@ if __name__ == '__main__':
 
 
         """ 
-        systems_instance.get_construction_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL")
-        systems_instance.get_jump_gate_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL")
-        systems_instance.get_market_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL")
-        systems_instance.get_shipyard_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL")
-        systems_instance.get_system_with_http_info("SYSTEMSYMBOL")
-        systems_instance.get_systems_with_http_info()
-        systems_instance.get_system_waypoints_with_http_info("SYSTEMSYMBOL")
-        systems_instance.get_waypoint_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL")
-        systems_instance.supply_construction_with_http_info("SYSTEMSYMBOL","WAYPOINTSYMBOL","SUPPLYCONSTRCUTIONREQUEST")
+       
 
-        contracts_instance.accept_contract_with_http_info("CONTRACTID")
-        contracts_instance.deliver_contract_with_http_info("CONTRACTID","DELIVERCONTRACTREQUEST")
-        contracts_instance.fulfill_contract_with_http_info("CONTRACTID")
-        contracts_instance.get_contract_with_http_info("CONTRACTID")
-        contracts_instance.get_contracts_with_http_info()
+
 
         factions_instance.get_faction_with_http_info("FACTIONSYMBOL")
         factions_instance.get_factions_with_http_info()
