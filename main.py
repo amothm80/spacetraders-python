@@ -110,7 +110,7 @@ def supply_construction(systems_instance:openapi_client.SystemsApi):
     waypoint_symbol = input('please input the waypoint symbol: ')
     supply_const_request = ''
     systems_instance.supply_construction_with_http_info(system_symbol=system_symbol,waypoint_symbol=waypoint_symbol,supply_construction_request=supply_const_request)
-    print_response(system_info.model_dump()['data']['data'])
+    print_response(systems_instance.model_dump()['data']['data'])
 
 
 
@@ -147,9 +147,109 @@ def get_contracts(contracts_instance:openapi_client.ContractsApi,page,limit):
         uinp,page = determine_pagination(contract_meta,page,limit)
 
 """factions"""
+def get_faction(factions_instance:openapi_client.FactionsApi):
+    faction_symbol = input('please input a  faction symbol: ')
+    faction_info = factions_instance.get_faction_with_http_info(faction_symbol=faction_symbol)
+    print_response(faction_info.model_dump()['data']['data'])
+
+def get_factions(factions_instance:openapi_client.FactionsApi,page,limit):
+    uinp = ''
+    while uinp != 'b':
+        faction_info = factions_instance.get_factions_with_http_info(page=page, limit=limit)
+        faction_data = faction_info.model_dump()['data']['data']
+        faction_meta = faction_info.model_dump()['data']['meta']
+        print_response_list(faction_data)
+        uinp,page = determine_pagination(faction_meta,page,limit)
 
 
 """fleet"""
+
+def dock_ship(fleet_instance:openapi_client.FleetApi):
+    fleet_symbol = input('please input a fleet symbol: ')
+    fleet_info = fleet_instance.dock_ship_with_http_info(fleet_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def extract_resources(fleet_instance:openapi_client.FleetApi):
+    fleet_symbol = input('please input a fleet symbol: ')
+    fleet_info = fleet_instance.extract_resources_with_http_info(fleet_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def extract_resources_with_survey(fleet_instance:openapi_client.FleetApi):
+    fleet_symbol = input('please input a fleet symbol: ')
+    survey = ''
+    fleet_info = fleet_instance.extract_resources_with_survey_with_http_info(fleet_symbol,survey=survey)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def get_my_ship(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    survey = ''
+    fleet_info = fleet_instance.get_my_ship_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def get_my_ships(fleet_instance:openapi_client.FleetApi,page,limit):
+    uinp = ''
+    while uinp != 'b':
+        fleet_info = factions_instance.get_my_ships_with_http_info(page=page, limit=limit)
+        fleet_data = fleet_info.model_dump()['data']['data']
+        fleet_meta = fleet_info.model_dump()['data']['meta']
+        print_response_list(fleet_data)
+        uinp,page = determine_pagination(fleet_meta,page,limit)
+
+
+def get_my_ship_cargo(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    fleet_info = fleet_instance.get_my_ship_cargo_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+
+def get_repair_ship(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    fleet_info = fleet_instance.get_repair_ship_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def get_mounts(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    fleet_info = fleet_instance.get_mounts_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+def get_scrap_ship(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    fleet_info = fleet_instance.get_scrap_ship_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+    
+def get_ship_cooldown(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    fleet_info = fleet_instance.get_ship_cooldown_with_http_info(ship_symbol=ship_symbol)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+
+def install_mount(fleet_instance:openapi_client.FleetApi):
+    ship_symbol = input('please input a ship symbol: ')
+    install_mount_request = ''
+    fleet_info = fleet_instance.install_mount_with_http_info(ship_symbol=ship_symbol,install_mount_request=install_mount_request)
+    print_response(fleet_info.model_dump()['data']['data'])
+
+
+
+    fleet_instance.get_ship_nav_with_http_info("SHIPSYMBOL")
+    fleet_instance.navigate_ship_with_http_info("SHIPSYMBOL")
+    fleet_instance.jettison_with_http_info("SHIPSYMBOL","JETTISONREQUEST")
+    fleet_instance.jump_ship_with_http_info("SHIPSYMBOL","JUMPSHIPREQUEST")
+    fleet_instance.negotiate_contract_with_http_info("SHIPSYMBOL")
+    fleet_instance.orbit_ship_with_http_info("SHIPSYMBOL")
+    fleet_instance.purchase_ship_with_http_info("PURCHASESHIPREQUEST")
+    fleet_instance.patch_ship_nav_with_http_info("SHIPSYMBOL","PATCHSHIPNAVREQUEST")
+    fleet_instance.refuel_ship_with_http_info("SHIPSYMBOL","REFUELSHIPREQUEST")
+    fleet_instance.repair_ship_with_http_info("SHIPSYMBOL")
+    fleet_instance.scrap_ship_with_http_info("SHIPSYMBOL")
+    fleet_instance.purchase_cargo_with_http_info("SHIPSYMBOL","PURCHASECARGOREQUEST")
+    fleet_instance.remove_mount_with_http_info("SHIPSYMBOL","REMOVEMOUNTREQUEST")
+    fleet_instance.sell_cargo_with_http_info("SHIPSYMBO","SELLCARGOREQUEST")
+    fleet_instance.ship_refine_with_http_info("SHIPSYMBO","SHIPREFINEREQUEST")
+    fleet_instance.siphon_resources_with_http_info("SHIPSYMBOL")
+    fleet_instance.transfer_cargo_with_http_info("SHIPSYMBOL","TRANSFERCARGO")
+    fleet_instance.warp_ship_with_http_info("SHIPSYMBOL","NAVIGATESHIPREQUEST")
     
 if __name__ == '__main__':
     get_token()
@@ -190,38 +290,9 @@ if __name__ == '__main__':
 
 
 
-        factions_instance.get_faction_with_http_info("FACTIONSYMBOL")
-        factions_instance.get_factions_with_http_info()
+
         
-        fleet_instance.dock_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.extract_resources_with_http_info("SHIPSYMBOL")
-        fleet_instance.extract_resources_with_survey_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_my_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_my_ships_with_http_info()
-        fleet_instance.get_my_ship_cargo_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_repair_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_mounts_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_scrap_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.get_ship_cooldown_with_http_info("SHIPSYMBOL")
-        fleet_instance.install_mount_with_http_info("SHIPSYMBOL","INSTALLMOUNTREQUEST")
-        fleet_instance.get_ship_nav_with_http_info("SHIPSYMBOL")
-        fleet_instance.navigate_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.jettison_with_http_info("SHIPSYMBOL","JETTISONREQUEST")
-        fleet_instance.jump_ship_with_http_info("SHIPSYMBOL","JUMPSHIPREQUEST")
-        fleet_instance.negotiate_contract_with_http_info("SHIPSYMBOL")
-        fleet_instance.orbit_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.purchase_ship_with_http_info("PURCHASESHIPREQUEST")
-        fleet_instance.patch_ship_nav_with_http_info("SHIPSYMBOL","PATCHSHIPNAVREQUEST")
-        fleet_instance.refuel_ship_with_http_info("SHIPSYMBOL","REFUELSHIPREQUEST")
-        fleet_instance.repair_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.scrap_ship_with_http_info("SHIPSYMBOL")
-        fleet_instance.purchase_cargo_with_http_info("SHIPSYMBOL","PURCHASECARGOREQUEST")
-        fleet_instance.remove_mount_with_http_info("SHIPSYMBOL","REMOVEMOUNTREQUEST")
-        fleet_instance.sell_cargo_with_http_info("SHIPSYMBO","SELLCARGOREQUEST")
-        fleet_instance.ship_refine_with_http_info("SHIPSYMBO","SHIPREFINEREQUEST")
-        fleet_instance.siphon_resources_with_http_info("SHIPSYMBOL")
-        fleet_instance.transfer_cargo_with_http_info("SHIPSYMBOL","TRANSFERCARGO")
-        fleet_instance.warp_ship_with_http_info("SHIPSYMBOL","NAVIGATESHIPREQUEST")
+
         """
         userinp = ''
         while userinp != 'exit':
